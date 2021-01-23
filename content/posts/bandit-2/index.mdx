@@ -1,0 +1,70 @@
+---
+title: "OverTheWire: Bandit Level 2"
+date: 2020-11-27
+slug: "/blog/over-the-wire-bandit-level-2"
+tags:
+  - Tutorial  
+  - OverTheWire
+  - Bandit
+  - Ethical Hacking
+---
+
+In the last post, we gained access to _bandit1_. Since we know how Bandit works, we know that somewhere on _bandit1_, we can find the password for _bandit2._
+
+### Level 2
+
+To get the instructions for Level 2, let’s head to the [Level 1 → Level 2](https://overthewire.org/wargames/bandit/bandit2.html) page.
+
+> The password for the next level is stored in a file called - located in the home directory
+>
+> Commands you may need to solve this level
+>
+> ls, cd, cat, file, du, find
+
+Just like Level 1, if you try using the **_ls_** command, you’ll see the following,
+
+```
+**bandit1@bandit:**~$ ls  
+\-
+```
+
+This basically means that there’s a file named **-** in our directory.
+
+These files are generally known as **dashed files**, since their names begin with a _dash_ or a _hyphen_.
+
+Now, if we try using the **_cat_** command like last time, the terminal does not return anything.
+
+```
+**bandit1@bandit:**~$ cat -
+```
+
+Moreover, if we type anything and press _enter,_ the terminal just prints whatever we typed.
+
+```
+**bandit1@bandit:**~$ cat -  
+test message  
+test message
+```
+
+This is because files with ‘-’ in the beginning need to be delimited with ‘./’, to differentiate the filename from any options we may provide with the operator.
+
+The dot in the delimiter represents the current directory. So when we say ‘**_./-’_** we’re basically just calling the file named ‘-’ in the current directory.
+
+So to read the contents of **_\-,_** type
+
+```
+**bandit1@bandit:**~$ cat ./-  
+CV1DtqXWVFXTvM2F0k09SHz0YwRINYA9
+```
+
+And we get the password for _bandit2,_ **CV1DtqXWVFXTvM2F0k09SHz0YwRINYA9.**
+
+Now, you can just logout of _bandit1_ and login to _bandit2!_
+
+Happy Hacking!
+
+By [Akash Ambashankar](https://medium.com/@akashambashankar) on [November 27, 2020](https://medium.com/p/f126b8f5993d).
+
+[Canonical link](https://medium.com/@akashambashankar/overthewire-bandit-level-2-f126b8f5993d)
+
+Exported from [Medium](https://medium.com) on January 22, 2021.

@@ -1,0 +1,114 @@
+---
+title: "OverTheWire: Bandit Level 5"
+date: 2020-11-28
+slug: "/blog/over-the-wire-bandit-level-5"
+tags:
+  - Tutorial  
+  - OverTheWire
+  - Bandit
+  - Ethical Hacking
+---
+
+In the last post, we gained access to _bandit4_. Let’s now use this and find the password for _bandit5._
+
+### Level 5
+
+> The password for the next level is stored in the only human-readable file in the **inhere** directory. Tip: if your terminal is messed up, try the “reset” command.
+>
+> Commands you may need to solve this level
+>
+> ls, cd, cat, file, du, find
+
+Let’s first find out what’s in our directory.
+
+```
+**bandit4@bandit:~$** ls  
+inhere
+```
+
+We see the directory, **inhere**. Let’s **_cd_** into **inhere** and find out what we have inside **inhere**.
+
+```
+**bandit4@bandit:~$** cd inhere  
+**bandit4@bandit:~/inhere$** ls -a  
+.   -file00  -file02  -file04  -file06  -file08  
+..  -file01  -file03  -file05  -file07  -file09
+```
+
+We can see that we have 10 dashed files. From [level 2](https://overthewire.org/wargames/bandit/bandit2.html), we know [how to use cat with dashed files](https://akashambashankar.medium.com/overthewire-bandit-level-2-f126b8f5993d).
+
+So that’s not the challenge of this level.
+
+Let’s try reading **\-file00.**
+
+```
+**bandit4@bandit:~/inhere$** cat ./-file00  
+�/\`2ғ�%��rL~5�g��� �����
+```
+
+That’s definitely not the password for _bandit5._
+
+Let’s take a look at the level goal again.
+
+> The password for the next level is stored in the only **human-readable** file in the **inhere** directory.
+
+Let’s take human readable to mean regular characters, unlike what what we saw in **\-file00**. Clearly **\-file00** was not readable.
+
+The characters that we normally read and write are known as **ASCII Characters.** So out of all the files in the **inhere** directory, we’re looking for the one file which contains **ASCII Characters** (human readable text).
+
+There’s a command called **_file_** that tells us the type of the content of a given file. Let’s try using **_file_** on **\-file00.**
+
+```
+**bandit4@bandit:~/inhere$** file ./-file00  
+./-file00: data
+```
+
+So the contents of **\-file00** are of type **“data”**. So any file with contents of type data is not what we want.
+
+Let’s try doing the same thing for **\-file01**.
+
+```
+**bandit4@bandit:~/inhere$** file ./-file01  
+./-file01: data
+```
+
+So **\-file1** doesn’t contain what we want either.
+
+Now, we could go and do this for each file, since we have only 10 files, and one of them is bound to have ASCII text.
+
+But this isn’t practical when we have a large number of files.
+
+We can do the same thing for every file at one go by using **\***.
+
+```
+**bandit4@bandit:~/inhere$** file ./\*  
+./-file00: data  
+./-file01: data  
+./-file02: data  
+./-file03: data  
+./-file04: data  
+./-file05: data  
+./-file06: data  
+./-file07: ASCII text  
+./-file08: data  
+./-file09: data
+```
+
+And we see that **\-file07** contains ASCII Text.
+
+so let’s read the contents of -file07.
+
+```
+**bandit4@bandit:~/inhere$** cat ./-file07  
+koReBOKuIDDepwhWk7jZC0RTdopnAYKh
+```
+
+And we now have the password for _bandit5!_ **koReBOKuIDDepwhWk7jZC0RTdopnAYKh**
+
+Happy Hacking!
+
+By [Akash Ambashankar](https://medium.com/@akashambashankar) on [November 28, 2020](https://medium.com/p/315512efc6c9).
+
+[Canonical link](https://medium.com/@akashambashankar/overthewire-bandit-level-5-315512efc6c9)
+
+Exported from [Medium](https://medium.com) on January 22, 2021.

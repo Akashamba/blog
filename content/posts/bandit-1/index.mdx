@@ -1,0 +1,82 @@
+---
+title: "OverTheWire: Bandit Level 1"
+date: 2020-11-26
+slug: "/blog/over-the-wire-bandit-level-1"
+tags:
+  - Tutorial  
+  - OverTheWire
+  - Bandit
+  - Ethical Hacking
+---
+
+In the last post, we successfully logged into bandit0.
+
+The that Bandit works is, once you login to a _user_ (say, bandit0), you need to perform certain tasks to obtain the password of _next user_ (say, bandit1). Then, using SSH, we can login to the next user.
+
+So now that we’re in _bandit0_, lets figure out the password for _bandit1._
+
+### Level 1
+
+The task for Level 1 is to figure out the password of bandit1 from bandit0.
+
+Since we’re already logged into bandit0, we can start looking for the password.
+
+To get the instructions for this level, head on over to the [Level 0 → Level 1](https://overthewire.org/wargames/bandit/bandit1.html) page.
+
+> Level Goal
+>
+> The password for the next level is stored in a file called **readme** located in the home directory. Use this password to log into bandit1 using SSH. Whenever you find a password for a level, use SSH (on port 2220) to log into that level and continue the game.
+>
+> Commands you may need to solve this level
+>
+> ls, cd, cat, file, du, find
+
+So we now know that the password we are looking for is in a file called **readme.** Let’s first find out what’s in our current directory.
+
+We can do this by using the command **_ls_** in our terminal.
+
+```
+**bandit0@bandit:**~$ ls  
+readme
+```
+
+We see that there is a file named **_readme._** To view the contents of the file, we use the command **_cat,_** followed by the name of the file we want to read.
+
+```
+**bandit0@bandit:**~$ cat readme  
+boJ9jbbUNNfktd78OOpsqOltutMc3MY1
+```
+
+According to the instructions, the **_readme_** file contains the password for the next level, _bandit1_. So lets assume the password for _bandit1_ is **_boJ9jbbUNNfktd78OOpsqOltutMc3MY1._**
+
+Lets try logging into _bandit1_ using the password we have just obtained.
+
+To login to bandit1, we have to logout of bandit0 first.
+
+We can do this using the command **_logout._**
+
+```
+**bandit0@bandit**:~$ logout  
+Connection to bandit.labs.overthewire.org closed.
+```
+
+And now, we have to login to bandit1, just like we logged into bandit0, using SSH.
+
+```
+$ ssh bandit1@bandit.labs.overthewire.org -p 2220  
+This is a OverTheWire game server. More information on [http://www.overthewire.org/wargames](http://www.overthewire.org/wargames)
+
+bandit1@bandit.labs.overthewire.org’s password:
+```
+
+Paste the password that we just got (again, you won’t see any response, but your password should have been pasted), and press enter.
+
+And you should be logged into _bandit1_!
+
+Happy Hacking!
+
+By [Akash Ambashankar](https://medium.com/@akashambashankar) on [November 26, 2020](https://medium.com/p/c78f9ca8b248).
+
+[Canonical link](https://medium.com/@akashambashankar/overthewire-bandit-level-1-c78f9ca8b248)
+
+Exported from [Medium](https://medium.com) on January 22, 2021.

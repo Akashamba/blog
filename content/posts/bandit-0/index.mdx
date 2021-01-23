@@ -1,0 +1,124 @@
+---
+title: "OverTheWire: Bandit Level 0"
+date: 2020-11-26
+slug: "/blog/over-the-wire-bandit-level-0"
+tags:
+  - Tutorial  
+  - OverTheWire
+  - Bandit
+  - Ethical Hacking
+---
+
+In this post, I’m going to cover Level 0 of [Bandit](https://overthewire.org/wargames/bandit/). This post will also act as an introduction to how Bandit works.
+
+I recommend you follow along as you’re reading this.
+
+So let’s get started!
+
+### Prerequisites
+
+Each level of bandit requires you to use [SSH (Secure Shell)](https://en.wikipedia.org/wiki/SSH_%28Secure_Shell%29), to login to a user on a server. If this is confusing, just read along and things will become clear.
+
+To play Bandit, all you really need is
+
+1.  A web browser
+2.  And a terminal (preferably Linux, although some versions of Windows 10 are also able to run the SSH command)
+
+### Getting Started
+
+Start by visiting [overthewire.org/wargames/](https://overthewire.org/wargames/). OverTheWire encourages self-learning through lots of reading. So definitely read through this intro page to get a good idea of what OverTheWire is about.
+
+![](https://cdn-images-1.medium.com/max/800/1*pJ9-Sh-6u3qreoTS7EDiAg.png)
+
+Once you’re done, click on the link to Bandit in the menu to the left, which should take you to [overthewire.org/wargames/bandit/](https://overthewire.org/wargames/bandit/). Again, read through this page as well.
+
+![](https://cdn-images-1.medium.com/max/800/1*EOiGowJlmFzOcQ2j1_AYcQ.png)
+
+And now, it’s time to get started with Level 0.
+
+### Level 0
+
+Once you’re on the Level 0 page, you get the following information,
+
+> **Level Goal**
+>
+> The goal of this level is for you to log into the game using SSH. The host to which you need to connect is **bandit.labs.overthewire.org**, on port 2220. The username is **bandit0** and the password is **bandit0**. Once logged in, go to the [Level 1](https://overthewire.org/wargames/bandit/bandit1.html) page to find out how to beat Level 1.
+>
+> **Commands you may need to solve this level**
+>
+> ssh
+
+What does all this mean? Let me break it down for you.
+
+> The goal of this level is for you to log into the game using SSH.
+
+In simple terms, SSH is a method for secure remote login from one computer to another.
+
+Using a terminal, you can login to another computer, provided, you have the
+
+1.  Username
+2.  Host Name
+3.  Password
+4.  Port Number
+
+And this is exactly what has been to given you in the _Level Goal._
+
+> The host to which you need to connect is **bandit.labs.overthewire.org**, on port **2220**. The username is **bandit0** and the password is **bandit0**.
+
+From this, you can infer the following,
+
+1.  **Host Name:** bandit.labs.overthewire.org
+2.  **Port Number:** 2220
+3.  **Username:** bandit0
+4.  **Password:** bandit0
+
+Now it’s time to whip out your terminal and login to bandit0.
+
+### SSH Syntax
+
+The syntax for using the SSH command is
+
+```
+$ ssh username@host\_name -p port\_number
+```
+
+To login to bandit0, type the following on your terminal and press enter.
+
+```
+$ ssh bandit0@bandit.labs.overthewire.org -p 2220
+```
+
+You should get the following response,
+
+```
+$ ssh bandit0@bandit.labs.overthewire.org -p 2220  
+This is a OverTheWire game server. More information on [http://www.overthewire.org/wargames](http://www.overthewire.org/wargames)
+
+bandit0@bandit.labs.overthewire.org's password:
+```
+
+Now, type bandit0 as the password and press enter.
+
+**Note:** You won’t see the cursor moving as you type the password, but that’s just how SSH works.
+
+And you should see a long message welcoming you to the server.
+
+Read through the message to understand how bandit works.
+
+You’ll also notice that your terminal has now changed to
+
+```
+bandit0@bandit:~$
+```
+
+You have successfully completed Level 0.
+
+Now, onto level 1.
+
+Happy Hacking!
+
+By [Akash Ambashankar](https://medium.com/@akashambashankar) on [November 26, 2020](https://medium.com/p/c7ca788211db).
+
+[Canonical link](https://medium.com/@akashambashankar/overthewire-bandit-levels-1-5-c7ca788211db)
+
+Exported from [Medium](https://medium.com) on January 22, 2021.
