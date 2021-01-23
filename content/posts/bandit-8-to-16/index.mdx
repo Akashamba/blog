@@ -1,0 +1,526 @@
+---
+title: "OverTheWire: Bandit Level 8 to Level 16"
+date: 2020-11-29
+slug: "/blog/over-the-wire-bandit-level-8-to-16"
+tags:
+  - Tutorial  
+  - OverTheWire
+  - Bandit
+  - Ethical Hacking
+---
+
+In the last post, we gained access to _bandit7_. Now, let’s find the password for _bandit8._
+
+### Level 8
+
+> Level Goal
+>
+> The password for the next level is stored in the file **data.txt** next to the word **millionth**
+>
+> Commands you may need to solve this level
+>
+> grep, sort, uniq, strings, base64, tr, tar, gzip, bzip2, xxd
+
+Let’s find out what we have in our directory.
+
+```shell
+bandit7@bandit:~$ ls  
+data.txt
+```
+
+We see **data.txt**. Let’s see what’s inside.
+
+```shell
+bandit7@bandit:~$ cat data.txt  
+// really really long output
+```
+
+So data.txt is a super long file with many lines.
+
+The **cat** kept printing lines for so long I had to restart my terminal.
+
+The level goal said the password was next to the word **millionth.** So let’s try using the **_grep_** command.
+
+The [**_grep_**](https://linuxcommand.org/lc3_man_pages/grep1.html) command is used to find strings or patterns inside text. We can use this command to find the line in **data.txt** which has the word **millionth**.
+
+```shell
+bandit7@bandit:~$ cat data.txt | grep millionth  
+millionth cvX2JJa4CFALtqS87jk27qwqGhBM9plV
+```
+
+And we have the password for _bandit8_, **cvX2JJa4CFALtqS87jk27qwqGhBM9plV.**
+
+---
+
+### Level 9
+
+> Level Goal
+>
+> The password for the next level is stored in the file **data.txt** and is the only line of text that occurs only once
+>
+> Commands you may need to solve this level
+>
+> grep, sort, uniq, strings, base64, tr, tar, gzip, bzip2, xxd
+
+If we try reading the contents of **data.txt** using **_cat_**, we get a lot of lines of random characters.
+
+We’re going to figure out which of these lines occurs only once.
+
+There is a command called **_uniq_** which can identify unique lines in a given file. It has a flag, **_\-u_**, which returns unique lines alone.
+
+But the problem with **_uniq_** is that it doesn’t detect repeated lines unless they’re adjacent. To overcome this, **_uniq_** needs to be used along with **_sort_**, which sorts the contents of a given file.
+
+So once we sort the contents of the file, the repeated lines will be adjacent, so that **_uniq -u_** can detect and ignore those lines.
+
+```shell
+bandit8@bandit:~$ sort data.txt | uniq -u  
+UsvVyFSfZZWbi6wgC7dAFyFuR6jQQUhR
+```
+
+And we have the password for _bandit9_, **UsvVyFSfZZWbi6wgC7dAFyFuR6jQQUhR**.
+
+---
+
+### Level 10
+
+> Level Goal
+>
+> The password for the next level is stored in the file **data.txt** in one of the few human-readable strings, preceded by several ‘=’ characters.
+>
+> Commands you may need to solve this level
+>
+> grep, sort, uniq, strings, base64, tr, tar, gzip, bzip2, xxd
+
+The **_file_** command helped us determine which files were **human readable** among other files.
+
+But now, we need to figure out which lines of a given file are human readable. For this, we have the **_strings_** command.
+
+This command returns only the **human readable** strings in a given file, ignoring the other non-ASCII characters.
+
+But even just this command alone is going to return a lot of strings we don’t need.
+
+> preceded by several ‘=’ characters.
+
+From this line, we know that we’re looking for a line the contains several ‘=’ characters. To narrow down our search based on this information, we can use the **_grep_** command along with the **_strings_** command.
+
+```shell
+bandit9@bandit:~$ strings data.txt | grep "=="  
+\========== the\*2i"4  
+\========== password  
+Z)========== is  
+&========== truKLdjsbJ5g7yyJ2X2R0o3a5HQJFuLk
+```
+
+Now, we’ve narrowed the results down to four strings. Based on the previous passwords, it is safe to assume that the password is **truKLdjsbJ5g7yyJ2X2R0o3a5HQJFuLk**.
+
+---
+
+### Level 11
+
+> Level Goal
+>
+> The password for the next level is stored in the file **data.txt**, which contains base64 encoded data
+>
+> Commands you may need to solve this level
+>
+> grep, sort, uniq, strings, base64, tr, tar, gzip, bzip2, xxd
+
+Let’s find out what’s inside **data.txt**.
+
+```shell
+bandit10@bandit:~$ ls  
+data.txt  
+bandit10@bandit:~$ cat data.txt  
+VGhlIHBhc3N3b3JkIGlzIElGdWt3S0dzRlc4TU9xM0lSRnFyeEUxaHhUTkViVVBSCg==
+```
+
+According to the level goal, the contents of **data.txt** are **base64 encoded** data. Read more about [**base64** here](https://en.wikipedia.org/wiki/Base64).
+
+There is a command to perform base64 operations known as [**base64.**](https://linux.die.net/man/1/base64) It has a flag, -d, which stands for decode, and is used to decode base64 encoded values.
+
+```shell
+bandit10@bandit:~$ base64 -d data.txt  
+The password is IFukwKGsFW8MOq3IRFqrxE1hxTNEbUPR
+```
+
+And we have our password for _bandit11_, **IFukwKGsFW8MOq3IRFqrxE1hxTNEbUPR**.
+
+---
+
+### Level 12
+
+> Level Goal
+>
+> The password for the next level is stored in the file **data.txt**, where all lowercase (a-z) and uppercase (A-Z) letters have been rotated by 13 positions
+>
+> Commands you may need to solve this level
+>
+> grep, sort, uniq, strings, base64, tr, tar, gzip, bzip2, xxd
+
+Let’s see what’s inside **data.txt**.
+
+```shell
+bandit11@bandit:~$ cat data.txt  
+Gur cnffjbeq vf 5Gr8L4qetPEsPk8htqjhRK8XSP6x2RHh
+```
+
+> all lowercase (a-z) and uppercase (A-Z) letters have been rotated by 13 positions
+
+This means that a=n, b=o, c=p, and so on till m=z, and then n=a, o=b, p=c and so on till z=m. This is known as **ROT13**, which is a letter substitution cipher. You can read more about [ROT13 here](https://en.wikipedia.org/wiki/ROT13).
+
+The **ROT13 cipher** uses the **same algorithm** for **encryption** and **decryption**. So, to decrypt a ROT13 encrypted file, we need to perform the **same operation** as encryption, which is to rotate each letter by 13 positions.
+
+To decode **data.txt** we need to implement the **ROT13 cipher** using the **_tr_** command. You can read more about the [**_tr_** command here](https://linuxcommand.org/lc3_man_pages/tr1.html).
+
+```shell
+bandit11@bandit:~$ cat data.txt | tr 'A-Za-z' 'N-ZA-Mn-za-m'  
+The password is 5Te8Y4drgCRfCx8ugdwuEX8KFC6k2EUu
+```
+
+And we have the password for _bandit12_, **5Te8Y4drgCRfCx8ugdwuEX8KFC6k2EUu**.
+
+---
+
+### Level 13
+
+> Level Goal
+>
+> The password for the next level is stored in the file **data.txt**, which is a hexdump of a file that has been repeatedly compressed. For this level it may be useful to create a directory under /tmp in which you can work using mkdir. For example: mkdir /tmp/myname123. Then copy the datafile using cp, and rename it using mv (read the manpages!)
+>
+> Commands you may need to solve this level
+>
+> grep, sort, uniq, strings, base64, tr, tar, gzip, bzip2, xxd, mkdir, cp, mv, file
+
+That’s a lot of new things. Let’s try and break it down.
+
+The first thing they ask us to do is,
+
+> **create a directory** under **/tmp** in which you can work using **mkdir**.
+
+So let’s do that.
+
+```shell
+bandit12@bandit:~$ cd /tmp  
+bandit12@bandit:/tmp$ mkdir test1234  
+bandit12@bandit:/tmp$ cd test1234  
+bandit12@bandit:/tmp/test1234$
+```
+
+So now we have our own directory under **/tmp**.
+
+> Then copy the datafile using cp, and rename it using mv (read the manpages!)
+
+```shell
+bandit12@bandit:/tmp/test1234$ cp /home/bandit12/data.txt .  
+bandit12@bandit:/tmp/test1234$ mv data.txt myData.txt  
+bandit12@bandit:/tmp/test1234$ ls  
+myData.txt
+```
+
+Now we have a **copy of data.txt** in our directory, which has been **renamed** to **myData.txt**.
+
+We’ve been asked to do this since we **don’t** have **write** permissions in the **_/home/bandit12_** directory. But in our own directory, we can write anything.
+
+This is essential for this level as we need to **modify** the contents of **myData.txt**.
+
+Now let’s see what we need to do next.
+
+> The password for the next level is stored in the file **data.txt**, which is a hexdump of a file that has been repeatedly compressed.
+
+So myData.txt is a **hexdump**. Read more about [hexdump here](https://en.wikipedia.org/wiki/Hex_dump).
+
+In order to decrypt myData.txt, we need to perform a **reverse hexdump**.
+
+A hexdump is done using the command [**_xxd_**](https://linux.die.net/man/1/xxd#:~:text=xxd%20creates%20a%20hex%20dump,of%20decoding%20to%20standard%20output.). A reverse hexdump can be achieved using **_xxd -r_**.
+
+```shell
+bandit12@bandit:/tmp/test1234$ xxd -r myData.txt  
+J쌑Oϊ{RBpQixYZ!dj(搿ݳ/A#  dbX?z2<A n}4hFF4LM @zFMChFC@4[@fh](http://twitter.com/fh "Twitter profile for @fh") ihPhMh  
+5(3A wOR6XS{  
+9?LPyB=zm?LNt\*7{qP̜%"w9qm4 N36KH䋑\[}! d3A4$M~\\JCkUƦ\\\\FSN&=\[q      \\)$:Ht&/(\]BB9<s h=
+```
+
+But we need to store the output of the **_xxd -r_**.
+
+```shell
+bandit12@bandit:/tmp/test1234$ xxd -r myData.txt | cat > reverse  
+bandit12@bandit:/tmp/test1234$ cat reverse  
+J쌑Oϊ{RBpQixYZ!dj(搿ݳ/A#  dbX?z2<A n}4hFF4LM @zFMChFC@4[@fh](http://twitter.com/fh "Twitter profile for @fh") ihPhMh  
+5(3A wOR6XS{  
+9?LPyB=zm?LNt\*7{qP̜%"w9qm4 N36KH䋑\[}! d3A4$M~\\JCkUƦ\\\\FSN&=\[q      \\)$:Ht&/(\]BB9<s h=b
+```
+
+Now we have a file named **reverse** which contains the **un-hexdumped** version of **myData.txt**.
+
+> hexdump of a file that has been repeatedly compressed.
+
+The file we have now is a compressed file. There are 5 ways to compress files in Linux. You can read about them [here](https://www.networkworld.com/article/3538471/how-to-compress-files-on-linux-5-ways.html#:~:text=The%20gzip%20command%20is%20very,replaced%20by%20the%20encrypted%20file.).
+
+To find out what was used to compress the file, we can use the **_file_** command (we already know that file tells us the type of the contents of the file, so in this case it will reveal the compression method used).
+
+```shell
+bandit12@bandit:/tmp/test1234$ file reverse  
+reverse: gzip compressed data, was "data2.bin", last modified: Thu May  7 18:14:30 2020, max compression, from Unix
+```
+
+So now we know that reverse was compressed using **gzip**.
+
+We need to **decompress** our file, reverse using **_gzip -d_**. But gzip -d only works on **.gz** files. So let’s **rename** our **reverse** to **reverse.gz** and **decompress** it.
+
+```shell
+bandit12@bandit:/tmp/test1234$ mv reverse reverse.gz  
+bandit12@bandit:/tmp/test1234$ gzip -d reverse.gz  
+bandit12@bandit:/tmp/test1234$ ls  
+myData.txt  reverse  
+bandit12@bandit:/tmp/test1234$ file reverse  
+reverse: bzip2 compressed data, block size = 900k
+```
+
+Our file, **reverse.gz**, was **decompressed** and stored under the name **reversed**, which was compressed using **bzip2**. So lets decompress it using **_bzip2 -d_**.
+
+```shell
+bandit12@bandit:/tmp/test1234$ bzip2 -d reverse  
+bzip2: Can't guess original name for reverse -- using reverse.out  
+bandit12@bandit:/tmp/test1234$ file reverse.out  
+reverse.out: gzip compressed data, was "data4.bin", last modified: Thu May  7 18:14:30 2020, max compression, from Unix
+```
+
+So **reverse**, got **decompressed** to **reverse.out**, which is is a **gzip compressed** file. Notice how we didn’t have any problem with the **file extension** in **bzip2**. Let’s keep decompressing!
+
+```shell
+bandit12@bandit:/tmp/test1234$ mv reverse.out reverse.gz  
+bandit12@bandit:/tmp/test1234$ gzip -d reverse.gz  
+bandit12@bandit:/tmp/test1234$ ls  
+myData.txt  reverse  
+bandit12@bandit:/tmp/test1234$ file reverse  
+reverse: POSIX tar archive (GNU)
+```
+
+Now we see that reverse is a **tar archive**. So we need to use the **tar** command. **_Tar_** also only works with **.tar** files, so we first need to rename reverse. Then we can use **_\-xf_** to **extract** files from the **tar archive**.
+
+```shell
+bandit12@bandit:/tmp/test1234$ mv reverse reverse.tar  
+bandit12@bandit:/tmp/test1234$ tar -xf reverse.tar  
+bandit12@bandit:/tmp/test1234$ ls  
+data5.bin  myData.txt  reverse.tar  
+bandit12@bandit:/tmp/test1234$ file data5.bin  
+data5.bin: POSIX tar archive (GNU)
+```
+
+**_tar -xf_** returned a file named data5.bin which is also a tar archive. Let’s unarchive it.
+
+```shell
+bandit12@bandit:/tmp/test1234$ mv data5.bin data5.tar  
+bandit12@bandit:/tmp/test1234$ tar -xf data5.tar  
+bandit12@bandit:/tmp/test1234$ ls  
+data5.tar  data6.bin  myData.txt  reverse.tar  
+bandit12@bandit:/tmp/test1234$ file data6.bin  
+data6.bin: bzip2 compressed data, block size = 900k  
+bandit12@bandit:/tmp/test1234$ bzip2 -d data6.bin  
+bzip2: Can't guess original name for data6.bin -- using data6.bin.out  
+bandit12@bandit:/tmp/test1234$ file data6.bin.out  
+data6.bin.out: POSIX tar archive (GNU)  
+bandit12@bandit:/tmp/test1234$ mv data6.bin.out data6.tar  
+bandit12@bandit:/tmp/test1234$ tar -xf data6.tar  
+bandit12@bandit:/tmp/test1234$ ls  
+data5.tar  data6.tar  data8.bin  myData.txt  reverse.tar  
+bandit12@bandit:/tmp/test1234$ file data8.bin  
+data8.bin: gzip compressed data, was "data9.bin", last modified: Thu May  7 18:14:30 2020, max compression, from Unix  
+bandit12@bandit:/tmp/test1234$ mv data8.bin data8.gz  
+bandit12@bandit:/tmp/test1234$ gzip -d data8.gz  
+bandit12@bandit:/tmp/test1234$ ls  
+data5.tar  data6.tar  data8  myData.txt  reverse.tar  
+bandit12@bandit:/tmp/test1234$ file data8  
+data8: ASCII text
+```
+
+Finally, we have a file that is just ASCII text, and not a compressed file.
+
+```shell
+bandit12@bandit:/tmp/test1234$ cat data8  
+The password is 8ZjyCRiBWFYkneahHwxCv3wb2a1ORpYL
+```
+
+And we have the password for _bandit13_, **8ZjyCRiBWFYkneahHwxCv3wb2a1ORpYL**.
+
+---
+
+### Level 14
+
+> Level Goal
+>
+> The password for the next level is stored in **/etc/bandit\_pass/bandit14 and can only be read by user bandit14**. For this level, you don’t get the next password, but you get a private SSH key that can be used to log into the next level. **Note:** **localhost** is a hostname that refers to the machine you are working on
+>
+> Commands you may need to solve this level
+>
+> ssh, telnet, nc, openssl, s\_client, nmap
+
+So we don’t find the password for _bandit14_ like we’ve been doing up until now.
+
+```shell
+bandit13@bandit:~$ ls  
+sshkey.private
+```
+
+The directory only contains a file known as **sshkey.private**. From what was told to us in the level goal, we can assume it contains the private SSH key for _bandit14_. Read more about private keys [here](https://help.ubuntu.com/community/SSH/OpenSSH/Keys).
+
+```shell
+bandit13@bandit:~$ cat sshkey.private   
+\-----BEGIN RSA PRIVATE KEY-----  
+MIIEpAIBAAKCAQEAxkkOE83W2cOT7IWhFc9aPaaQmQDdgzuXCv+ppZHa++buSkN+  
+gg0tcr7Fw8NLGa5+Uzec2rEg0WmeevB13AIoYp0MZyETq46t+jk9puNwZwIt9XgB  
+ZufGtZEwWbFWw/vVLNwOXBe4UWStGRWzgPpEeSv5Tb1VjLZIBdGphTIK22Amz6Zb  
+ThMsiMnyJafEwJ/T8PQO3myS91vUHEuoOMAzoUID4kN0MEZ3+XahyK0HJVq68KsV  
+ObefXG1vvA3GAJ29kxJaqvRfgYnqZryWN7w3CHjNU4c/2Jkp+n8L0SnxaNA+WYA7  
+jiPyTF0is8uzMlYQ4l1Lzh/8/MpvhCQF8r22dwIDAQABAoIBAQC6dWBjhyEOzjeA  
+J3j/RWmap9M5zfJ/wb2bfidNpwbB8rsJ4sZIDZQ7XuIh4LfygoAQSS+bBw3RXvzE  
+pvJt3SmU8hIDuLsCjL1VnBY5pY7Bju8g8aR/3FyjyNAqx/TLfzlLYfOu7i9Jet67  
+xAh0tONG/u8FB5I3LAI2Vp6OviwvdWeC4nOxCthldpuPKNLA8rmMMVRTKQ+7T2VS  
+nXmwYckKUcUgzoVSpiNZaS0zUDypdpy2+tRH3MQa5kqN1YKjvF8RC47woOYCktsD  
+o3FFpGNFec9Taa3Msy+DfQQhHKZFKIL3bJDONtmrVvtYK40/yeU4aZ/HA2DQzwhe  
+ol1AfiEhAoGBAOnVjosBkm7sblK+n4IEwPxs8sOmhPnTDUy5WGrpSCrXOmsVIBUf  
+laL3ZGLx3xCIwtCnEucB9DvN2HZkupc/h6hTKUYLqXuyLD8njTrbRhLgbC9QrKrS  
+M1F2fSTxVqPtZDlDMwjNR04xHA/fKh8bXXyTMqOHNJTHHNhbh3McdURjAoGBANkU  
+1hqfnw7+aXncJ9bjysr1ZWbqOE5Nd8AFgfwaKuGTTVX2NsUQnCMWdOp+wFak40JH  
+PKWkJNdBG+ex0H9JNQsTK3X5PBMAS8AfX0GrKeuwKWA6erytVTqjOfLYcdp5+z9s  
+8DtVCxDuVsM+i4X8UqIGOlvGbtKEVokHPFXP1q/dAoGAcHg5YX7WEehCgCYTzpO+  
+xysX8ScM2qS6xuZ3MqUWAxUWkh7NGZvhe0sGy9iOdANzwKw7mUUFViaCMR/t54W1  
+GC83sOs3D7n5Mj8x3NdO8xFit7dT9a245TvaoYQ7KgmqpSg/ScKCw4c3eiLava+J  
+3btnJeSIU+8ZXq9XjPRpKwUCgYA7z6LiOQKxNeXH3qHXcnHok855maUj5fJNpPbY  
+iDkyZ8ySF8GlcFsky8Yw6fWCqfG3zDrohJ5l9JmEsBh7SadkwsZhvecQcS9t4vby  
+9/8X4jS0P8ibfcKS4nBP+dT81kkkg5Z5MohXBORA7VWx+ACohcDEkprsQ+w32xeD  
+qT1EvQKBgQDKm8ws2ByvSUVs9GjTilCajFqLJ0eVYzRPaY6f++Gv/UVfAPV4c+S0  
+kAWpXbv5tbkkzbS0eaLPTKgLzavXtQoTtKwrjpolHKIHUz6Wu+n4abfAIRFubOdN  
+/+aLoRQ0yBDRbdXMsZN/jvY44eM+xRLdRVyMmdPtP8belRi2E2aEzA==  
+\-----END RSA PRIVATE KEY-----
+```
+
+So our goal is to use this key to login to _bandit14_. I used the steps from [this page](https://docs.rackspace.com/support/how-to/logging-in-with-an-ssh-private-key-on-linuxmac/) to login to _bandit14_ using a private key instead of a regular password.
+
+First, copy the private key and store it in a file.
+
+Then change file permissions to 600 using **_chmod_** command. Read about [file permissions](https://www.linux.com/training-tutorials/understanding-linux-file-permissions/) and [chmod](https://manpages.ubuntu.com/manpages/trusty/man1/chmod.1.html).
+
+```
+$ chmod 600 bandit14\_key.txt
+```
+
+And now we can SSH into _bandit14_ using the private key as an arguement.
+
+```shell
+$ ssh -i bandit14\_key.txt bandit14@bandit.labs.overthewire.org -p 2220
+```
+And you should be inside _bandit14_!
+
+---
+
+### Level 15
+
+> Level Goal
+>
+> The password for the next level can be retrieved by submitting the password of the current level to **port 30000 on localhost**.
+>
+> Commands you may need to solve this level
+>
+> ssh, telnet, nc, openssl, s\_client, nmap
+
+To get the password for _bandit15_, we need to submit the password of _bandit14_ to **localhost** on **port 30000**. But we don’t know the password for _bandit14_ yet, because we logged in using **SSH private key**.
+
+In the previous level, we were told that the password for _bandit14_ is stored in **/etc/bandit\_pass/bandit14**. So let’s first get the password.
+
+```shell
+bandit14@bandit:~$ cat /etc/bandit\_pass/bandit14  
+4wcYUJFw0k0XLShlDzztnTBHiqxU3b3e
+```
+
+Now, we have the password for _bandit14_, we have to submit it to localhost port 30000. We can do this using the *_netcat_* command.
+
+```shell
+bandit14@bandit:~$ nc localhost 30000
+```
+
+We now have a connection to localhost on port 30000. Now, we can enter the password for *_bandit14_*.
+
+```shell
+bandit14@bandit:~$ nc localhost 30000
+4wcYUJFw0k0XLShlDzztnTBHiqxU3b3e
+Correct!
+BfMYroe26WYalil77FoDi9qh59eK5xNr
+```
+
+And we have the password for _bandit15_, **BfMYroe26WYalil77FoDi9qh59eK5xNr**.
+
+---
+
+### Level 16
+
+> Level Goal
+>
+> The password for the next level can be retrieved by submitting the password of the current level to **port 30001 on localhost** using SSL encryption.
+>
+> **Helpful note: Getting “HEARTBEATING” and “Read R BLOCK”? Use -ign\_eof and read the “CONNECTED COMMANDS” section in the manpage. Next to ‘R’ and ‘Q’, the ‘B’ command also works in this version of that command…**
+>
+> Commands you may need to solve this level
+>
+> ssh, telnet, nc, openssl, s\_client, nmap
+
+To get the password for bandit16, we need to use SSL encryption to connect to localhost on port 30001.
+
+This is similar to the previous level, but instead of using the **_netcat_** command, we need to use the **_openssl_** and **_s\_client_** commands. Read about [openssl](https://linux.die.net/man/1/openssl) and [s\_client](https://www.openssl.org/docs/man1.0.2/man1/openssl-s_client.html).
+
+### openssl Syntax
+```shell
+$ openssl s\_client -connect host:port
+```
+This syntax helps us establish a connection to a server that is also using either SSL or TLS protocol.
+
+In our case, we need to connect to localhost on port 30001.
+
+```shell
+bandit15@bandit:~$ openssl s\_client -connect localhost:30001  
+CONNECTED(00000003)  
+.  
+.   
+.  
+. // Information about SSL, TLS and the remote server  
+.  
+.  
+.
+
+Start Time: 1606914068  
+    Timeout   : 7200 (sec)  
+    Verify return code: 18 (self signed certificate)  
+    Extended master secret: yes  
+\---  
+```
+
+And now we can enter the password for the current level, _bandit15_.
+
+```shell
+bandit15@bandit:~$ openssl s\_client -connect localhost:30001  
+CONNECTED(00000003)  
+.  
+.   
+.  
+. // Information about SSL, TLS and the remote server  
+.  
+.  
+.
+
+Start Time: 1606914068  
+    Timeout   : 7200 (sec)  
+    Verify return code: 18 (self signed certificate)  
+    Extended master secret: yes  
+\---  
+BfMYroe26WYalil77FoDi9qh59eK5xNr  
+Correct!  
+cluFn7wTiGryunymYOu4RcffSxQluehd
+
+closed
+```
+
+And we got the password for _bandit16_, **cluFn7wTiGryunymYOu4RcffSxQluehd**.
+
+Happy Hacking!
+
+By [Akash Ambashankar](https://akashamba.netlify.app)
