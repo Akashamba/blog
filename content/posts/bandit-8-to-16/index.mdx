@@ -23,14 +23,14 @@ In the last post, we gained access to _bandit7_. Now, let’s find the password 
 
 Let’s find out what we have in our directory.
 
-```shell
+```bash
 bandit7@bandit:~$ ls  
 data.txt
 ```
 
 We see **data.txt**. Let’s see what’s inside.
 
-```shell
+```bash
 bandit7@bandit:~$ cat data.txt  
 // really really long output
 ```
@@ -43,7 +43,7 @@ The level goal said the password was next to the word **millionth.** So let’s 
 
 The [**_grep_**](https://linuxcommand.org/lc3_man_pages/grep1.html) command is used to find strings or patterns inside text. We can use this command to find the line in **data.txt** which has the word **millionth**.
 
-```shell
+```bash
 bandit7@bandit:~$ cat data.txt | grep millionth  
 millionth cvX2JJa4CFALtqS87jk27qwqGhBM9plV
 ```
@@ -72,7 +72,7 @@ But the problem with **_uniq_** is that it doesn’t detect repeated lines unles
 
 So once we sort the contents of the file, the repeated lines will be adjacent, so that **_uniq -u_** can detect and ignore those lines.
 
-```shell
+```bash
 bandit8@bandit:~$ sort data.txt | uniq -u  
 UsvVyFSfZZWbi6wgC7dAFyFuR6jQQUhR
 ```
@@ -103,7 +103,7 @@ But even just this command alone is going to return a lot of strings we don’t 
 
 From this line, we know that we’re looking for a line the contains several ‘=’ characters. To narrow down our search based on this information, we can use the **_grep_** command along with the **_strings_** command.
 
-```shell
+```bash
 bandit9@bandit:~$ strings data.txt | grep "=="  
 \========== the\*2i"4  
 \========== password  
@@ -127,7 +127,7 @@ Now, we’ve narrowed the results down to four strings. Based on the previous pa
 
 Let’s find out what’s inside **data.txt**.
 
-```shell
+```bash
 bandit10@bandit:~$ ls  
 data.txt  
 bandit10@bandit:~$ cat data.txt  
@@ -138,7 +138,7 @@ According to the level goal, the contents of **data.txt** are **base64 encoded**
 
 There is a command to perform base64 operations known as [**base64.**](https://linux.die.net/man/1/base64) It has a flag, -d, which stands for decode, and is used to decode base64 encoded values.
 
-```shell
+```bash
 bandit10@bandit:~$ base64 -d data.txt  
 The password is IFukwKGsFW8MOq3IRFqrxE1hxTNEbUPR
 ```
@@ -159,7 +159,7 @@ And we have our password for _bandit11_, **IFukwKGsFW8MOq3IRFqrxE1hxTNEbUPR**.
 
 Let’s see what’s inside **data.txt**.
 
-```shell
+```bash
 bandit11@bandit:~$ cat data.txt  
 Gur cnffjbeq vf 5Gr8L4qetPEsPk8htqjhRK8XSP6x2RHh
 ```
@@ -172,7 +172,7 @@ The **ROT13 cipher** uses the **same algorithm** for **encryption** and **decryp
 
 To decode **data.txt** we need to implement the **ROT13 cipher** using the **_tr_** command. You can read more about the [**_tr_** command here](https://linuxcommand.org/lc3_man_pages/tr1.html).
 
-```shell
+```bash
 bandit11@bandit:~$ cat data.txt | tr 'A-Za-z' 'N-ZA-Mn-za-m'  
 The password is 5Te8Y4drgCRfCx8ugdwuEX8KFC6k2EUu
 ```
@@ -199,7 +199,7 @@ The first thing they ask us to do is,
 
 So let’s do that.
 
-```shell
+```bash
 bandit12@bandit:~$ cd /tmp  
 bandit12@bandit:/tmp$ mkdir test1234  
 bandit12@bandit:/tmp$ cd test1234  
@@ -210,7 +210,7 @@ So now we have our own directory under **/tmp**.
 
 > Then copy the datafile using cp, and rename it using mv (read the manpages!)
 
-```shell
+```bash
 bandit12@bandit:/tmp/test1234$ cp /home/bandit12/data.txt .  
 bandit12@bandit:/tmp/test1234$ mv data.txt myData.txt  
 bandit12@bandit:/tmp/test1234$ ls  
@@ -233,7 +233,7 @@ In order to decrypt myData.txt, we need to perform a **reverse hexdump**.
 
 A hexdump is done using the command [**_xxd_**](https://linux.die.net/man/1/xxd#:~:text=xxd%20creates%20a%20hex%20dump,of%20decoding%20to%20standard%20output.). A reverse hexdump can be achieved using **_xxd -r_**.
 
-```shell
+```bash
 bandit12@bandit:/tmp/test1234$ xxd -r myData.txt  
 J쌑Oϊ{RBpQixYZ!dj(搿ݳ/A#  dbX?z2<A n}4hFF4LM @zFMChFC@4[@fh](http://twitter.com/fh "Twitter profile for @fh") ihPhMh  
 5(3A wOR6XS{  
@@ -242,7 +242,7 @@ J쌑Oϊ{RBpQixYZ!dj(搿ݳ/A#  dbX?z2<A n}4hFF4LM @zFMChFC@4[@fh](ht
 
 But we need to store the output of the **_xxd -r_**.
 
-```shell
+```bash
 bandit12@bandit:/tmp/test1234$ xxd -r myData.txt | cat > reverse  
 bandit12@bandit:/tmp/test1234$ cat reverse  
 J쌑Oϊ{RBpQixYZ!dj(搿ݳ/A#  dbX?z2<A n}4hFF4LM @zFMChFC@4[@fh](http://twitter.com/fh "Twitter profile for @fh") ihPhMh  
@@ -258,7 +258,7 @@ The file we have now is a compressed file. There are 5 ways to compress files in
 
 To find out what was used to compress the file, we can use the **_file_** command (we already know that file tells us the type of the contents of the file, so in this case it will reveal the compression method used).
 
-```shell
+```bash
 bandit12@bandit:/tmp/test1234$ file reverse  
 reverse: gzip compressed data, was "data2.bin", last modified: Thu May  7 18:14:30 2020, max compression, from Unix
 ```
@@ -267,7 +267,7 @@ So now we know that reverse was compressed using **gzip**.
 
 We need to **decompress** our file, reverse using **_gzip -d_**. But gzip -d only works on **.gz** files. So let’s **rename** our **reverse** to **reverse.gz** and **decompress** it.
 
-```shell
+```bash
 bandit12@bandit:/tmp/test1234$ mv reverse reverse.gz  
 bandit12@bandit:/tmp/test1234$ gzip -d reverse.gz  
 bandit12@bandit:/tmp/test1234$ ls  
@@ -278,7 +278,7 @@ reverse: bzip2 compressed data, block size = 900k
 
 Our file, **reverse.gz**, was **decompressed** and stored under the name **reversed**, which was compressed using **bzip2**. So lets decompress it using **_bzip2 -d_**.
 
-```shell
+```bash
 bandit12@bandit:/tmp/test1234$ bzip2 -d reverse  
 bzip2: Can't guess original name for reverse -- using reverse.out  
 bandit12@bandit:/tmp/test1234$ file reverse.out  
@@ -287,7 +287,7 @@ reverse.out: gzip compressed data, was "data4.bin", last modified: Thu May  7 18
 
 So **reverse**, got **decompressed** to **reverse.out**, which is is a **gzip compressed** file. Notice how we didn’t have any problem with the **file extension** in **bzip2**. Let’s keep decompressing!
 
-```shell
+```bash
 bandit12@bandit:/tmp/test1234$ mv reverse.out reverse.gz  
 bandit12@bandit:/tmp/test1234$ gzip -d reverse.gz  
 bandit12@bandit:/tmp/test1234$ ls  
@@ -298,7 +298,7 @@ reverse: POSIX tar archive (GNU)
 
 Now we see that reverse is a **tar archive**. So we need to use the **tar** command. **_Tar_** also only works with **.tar** files, so we first need to rename reverse. Then we can use **_\-xf_** to **extract** files from the **tar archive**.
 
-```shell
+```bash
 bandit12@bandit:/tmp/test1234$ mv reverse reverse.tar  
 bandit12@bandit:/tmp/test1234$ tar -xf reverse.tar  
 bandit12@bandit:/tmp/test1234$ ls  
@@ -309,7 +309,7 @@ data5.bin: POSIX tar archive (GNU)
 
 **_tar -xf_** returned a file named data5.bin which is also a tar archive. Let’s unarchive it.
 
-```shell
+```bash
 bandit12@bandit:/tmp/test1234$ mv data5.bin data5.tar  
 bandit12@bandit:/tmp/test1234$ tar -xf data5.tar  
 bandit12@bandit:/tmp/test1234$ ls  
@@ -336,7 +336,7 @@ data8: ASCII text
 
 Finally, we have a file that is just ASCII text, and not a compressed file.
 
-```shell
+```bash
 bandit12@bandit:/tmp/test1234$ cat data8  
 The password is 8ZjyCRiBWFYkneahHwxCv3wb2a1ORpYL
 ```
@@ -357,14 +357,14 @@ And we have the password for _bandit13_, **8ZjyCRiBWFYkneahHwxCv3wb2a1ORpYL**.
 
 So we don’t find the password for _bandit14_ like we’ve been doing up until now.
 
-```shell
+```bash
 bandit13@bandit:~$ ls  
 sshkey.private
 ```
 
 The directory only contains a file known as **sshkey.private**. From what was told to us in the level goal, we can assume it contains the private SSH key for _bandit14_. Read more about private keys [here](https://help.ubuntu.com/community/SSH/OpenSSH/Keys).
 
-```shell
+```bash
 bandit13@bandit:~$ cat sshkey.private   
 \-----BEGIN RSA PRIVATE KEY-----  
 MIIEpAIBAAKCAQEAxkkOE83W2cOT7IWhFc9aPaaQmQDdgzuXCv+ppZHa++buSkN+  
@@ -407,7 +407,7 @@ $ chmod 600 bandit14\_key.txt
 
 And now we can SSH into _bandit14_ using the private key as an arguement.
 
-```shell
+```bash
 $ ssh -i bandit14\_key.txt bandit14@bandit.labs.overthewire.org -p 2220
 ```
 And you should be inside _bandit14_!
@@ -428,20 +428,20 @@ To get the password for _bandit15_, we need to submit the password of _bandit14_
 
 In the previous level, we were told that the password for _bandit14_ is stored in **/etc/bandit\_pass/bandit14**. So let’s first get the password.
 
-```shell
+```bash
 bandit14@bandit:~$ cat /etc/bandit\_pass/bandit14  
 4wcYUJFw0k0XLShlDzztnTBHiqxU3b3e
 ```
 
 Now, we have the password for _bandit14_, we have to submit it to localhost port 30000. We can do this using the *_netcat_* command.
 
-```shell
+```bash
 bandit14@bandit:~$ nc localhost 30000
 ```
 
 We now have a connection to localhost on port 30000. Now, we can enter the password for *_bandit14_*.
 
-```shell
+```bash
 bandit14@bandit:~$ nc localhost 30000
 4wcYUJFw0k0XLShlDzztnTBHiqxU3b3e
 Correct!
@@ -469,14 +469,14 @@ To get the password for bandit16, we need to use SSL encryption to connect to lo
 This is similar to the previous level, but instead of using the **_netcat_** command, we need to use the **_openssl_** and **_s\_client_** commands. Read about [openssl](https://linux.die.net/man/1/openssl) and [s\_client](https://www.openssl.org/docs/man1.0.2/man1/openssl-s_client.html).
 
 ### openssl Syntax
-```shell
+```bash
 $ openssl s\_client -connect host:port
 ```
 This syntax helps us establish a connection to a server that is also using either SSL or TLS protocol.
 
 In our case, we need to connect to localhost on port 30001.
 
-```shell
+```bash
 bandit15@bandit:~$ openssl s\_client -connect localhost:30001  
 CONNECTED(00000003)  
 .  
@@ -496,7 +496,7 @@ Start Time: 1606914068
 
 And now we can enter the password for the current level, _bandit15_.
 
-```shell
+```bash
 bandit15@bandit:~$ openssl s\_client -connect localhost:30001  
 CONNECTED(00000003)  
 .  

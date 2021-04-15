@@ -78,19 +78,19 @@ Now it’s time to whip out your terminal and login to bandit0.
 
 The syntax for using the SSH command is
 
-```shell
+```bash
 $ ssh username@host\_name -p port\_number
 ```
 
 To login to bandit0, type the following on your terminal and press enter.
 
-```shell
+```bash
 $ ssh bandit0@bandit.labs.overthewire.org -p 2220
 ```
 
 You should get the following response,
 
-```shell
+```bash
 $ ssh bandit0@bandit.labs.overthewire.org -p 2220  
 This is a OverTheWire game server. More information on [http://www.overthewire.org/wargames](http://www.overthewire.org/wargames)
 
@@ -107,7 +107,7 @@ Read through the message to understand how bandit works.
 
 You’ll also notice that your terminal has now changed to
 
-```shell
+```bash
 bandit0@bandit:~$
 ```
 
@@ -141,14 +141,14 @@ So we now know that the password we are looking for is in a file called **readme
 
 We can do this by using the command **_ls_** in our terminal.
 
-```shell
+```bash
 bandit0@bandit:~$ ls  
 readme
 ```
 
 We see that there is a file named **_readme._** To view the contents of the file, we use the command **_cat,_** followed by the name of the file we want to read.
 
-```shell
+```bash
 bandit0@bandit:~$ cat readme  
 boJ9jbbUNNfktd78OOpsqOltutMc3MY1
 ```
@@ -161,7 +161,7 @@ To login to bandit1, we have to logout of bandit0 first.
 
 We can do this using the command **_logout._**
 
-```shell
+```bash
 bandit0@bandit:~$ logout  
 Connection to bandit.labs.overthewire.org closed.
 ```
@@ -193,7 +193,7 @@ To get the instructions for Level 2, let’s head to the [Level 1 → Level 2](h
 
 Just like Level 1, if you try using the **_ls_** command, you’ll see the following,
 
-```shell
+```bash
 bandit1@bandit:~$ ls  
 \-
 ```
@@ -204,13 +204,13 @@ These files are generally known as **dashed files**, since their names begin wit
 
 Now, if we try using the **_cat_** command like last time, the terminal does not return anything.
 
-```shell
+```bash
 bandit1@bandit:~$ cat -
 ```
 
 Moreover, if we type anything and press _enter,_ the terminal just prints whatever we typed.
 
-```shell
+```bash
 bandit1@bandit:~$ cat -  
 test message  
 test message
@@ -222,7 +222,7 @@ The dot in the delimiter represents the current directory. So when we say ‘**_
 
 So to read the contents of **_\-,_** type
 
-```shell
+```bash
 bandit1@bandit:~$ cat ./-  
 CV1DtqXWVFXTvM2F0k09SHz0YwRINYA9
 ```
@@ -245,14 +245,14 @@ Now, you can just logout of _bandit1_ and login to _bandit2!_
 
 And sure enough, using **_ls_** shows us the file **spaces in this filename.**
 
-```shell
+```bash
 bandit2@bandit:~$ ls  
 spaces in this filename
 ```
 
 Now, if we simply try **_cat filename_**,
 
-```shell
+```bash
 bandit2@bandit:~$ cat spaces in this filename   
 cat: spaces: No such file or directory  
 cat: in: No such file or directory  
@@ -266,7 +266,7 @@ So we need to make sure that we include the spaces in the filename. There are tw
 
 ### 1\. Using Quotes (“”)
 
-```shell
+```bash
 bandit2@bandit:~$ cat “spaces in this filename”  
 UmHadQclWmgdLOKQ3YNgjWxGoRMb5luK
 ```
@@ -277,7 +277,7 @@ Doing so passes in the filename as a single parameter to cat, rather than multip
 
 Another way of dealing with spaces in filenames is to escape the spaces, so that the filename is processed as a single filename.
 
-```shell
+```bash
 bandit2@bandit:~$ cat spaces\\ in\\ this\\ filename   
 UmHadQclWmgdLOKQ3YNgjWxGoRMb5luK
 ```
@@ -302,7 +302,7 @@ So let’s move on to the next level!
 
 Let’s first use **_ls_** and see what we have in our current directory.
 
-```shell
+```bash
 bandit3@bandit:~$ ls  
 inhere
 ```
@@ -313,7 +313,7 @@ We see that there’s a directory named **inhere** (depending on your terminal, 
 
 So we need to get into the **inhere** directory. Let’s change our **current directory** to **inhere** by using the **_cd_** command.
 
-```shell
+```bash
 bandit3@bandit:~$ cd inhere  
 bandit3@bandit:~/inhere$
 ```
@@ -324,7 +324,7 @@ This means that we have successfully changed directories.
 
 Now let’s find out what’s there in the **inhere** directory.
 
-```shell
+```bash
 bandit3@bandit:~/inhere$ ls  
 bandit3@bandit:~/inhere$
 ```
@@ -337,7 +337,7 @@ So, the file we’re looking for is hidden.
 
 To view **hidden files**, run the **_ls_** command with the **_\-a_** flag which enables viewing of all files in a directory.
 
-```shell
+```bash
 bandit3@bandit:~/inhere$ ls -a  
 .  ..  .hidden
 ```
@@ -346,7 +346,7 @@ Now, we see a file named **.hidden** (files whose names begin with a ‘.’ ar
 
 Now let’s read the contents of **.hidden**
 
-```shell
+```bash
 bandit3@bandit:~/inhere$ cat .hidden  
 pIwrPrtPN36QITSp3EQaw936yaFoFgAB
 ```
@@ -367,14 +367,14 @@ And we have the password for _bandit4_!
 
 Let’s first find out what’s in our directory.
 
-```shell
+```bash
 bandit4@bandit:~$ ls  
 inhere
 ```
 
 We see the directory, **inhere**. Let’s **_cd_** into **inhere** and find out what we have inside **inhere**.
 
-```shell
+```bash
 bandit4@bandit:~$ cd inhere  
 bandit4@bandit:~/inhere$ ls -a  
 .   -file00  -file02  -file04  -file06  -file08  
@@ -387,7 +387,7 @@ So that’s not the challenge of this level.
 
 Let’s try reading **\-file00.**
 
-```shell
+```bash
 bandit4@bandit:~/inhere$ cat ./-file00  
 �/\`2ғ�%��rL~5�g��� �����
 ```
@@ -404,7 +404,7 @@ The characters that we normally read and write are known as **ASCII Characters.*
 
 There’s a command called **_file_** that tells us the type of the content of a given file. Let’s try using **_file_** on **\-file00.**
 
-```shell
+```bash
 bandit4@bandit:~/inhere$ file ./-file00  
 ./-file00: data
 ```
@@ -413,7 +413,7 @@ So the contents of **\-file00** are of type **“data”**. So any file with con
 
 Let’s try doing the same thing for **\-file01**.
 
-```shell
+```bash
 bandit4@bandit:~/inhere$ file ./-file01  
 ./-file01: data
 ```
@@ -426,7 +426,7 @@ But this isn’t practical when we have a large number of files.
 
 We can do the same thing for every file at one go by using **\***.
 
-```shell
+```bash
 bandit4@bandit:~/inhere$ file ./\*  
 ./-file00: data  
 ./-file01: data  
@@ -444,7 +444,7 @@ And we see that **\-file07** contains ASCII Text.
 
 so let’s read the contents of -file07.
 
-```shell
+```bash
 bandit4@bandit:~/inhere$ cat ./-file07  
 koReBOKuIDDepwhWk7jZC0RTdopnAYKh
 ```
@@ -471,14 +471,14 @@ And we now have the password for _bandit5!_ **koReBOKuIDDepwhWk7jZC0RTdopnAYKh**
 
 Let’s use **_ls_** and see what we have in our directory.
 
-```shell
+```bash
 bandit5@bandit:~$ ls  
 inhere
 ```
 
 So we have a directory named **inhere.** _The Level Goal_ did say that the password is somewhere inside the **inhere** directory. So let’s **_cd_** into **inhere** and find out what’s inside.
 
-```shell
+```bash
 bandit5@bandit:~$ cd inhere  
 bandit5@bandit:~/inhere$ ls  
 maybehere00  maybehere04  maybehere08  maybehere12  maybehere16  
@@ -503,21 +503,21 @@ and to check the size of the file, we can use the **_find_** command with the **
 
 This will display all files of size 1033 bytes in the current directory.
 
-```shell
+```bash
 bandit5@bandit:~/inhere$ find -size 1033c  
 ./maybehere07/.file2
 ```
 
 This returns only one file, **./maybehere07/.file2**. So this is the file with our password. But just to be sure, we can run the **_file_** command on **./maybehere07/.file2**, to ensure that it is human readable.
 
-```shell
+```bash
 bandit5@bandit:~/inhere$ file ./maybehere07/.file2  
 ./maybehere07/.file2: ASCII text, with very long lines
 ```
 
 So we can confirm **./maybehere07/.file2** is indeed human readable, of size 1033 bytes, and not an executable.
 
-```shell
+```bash
 bandit5@bandit:~/inhere$ cat ./maybehere07/.file2  
 DXjZPULLxYr17uwoI01bNLQbtFemEgo7
 ```
@@ -554,7 +554,7 @@ we need to search from the root directory, which is represented with a ‘**/**�
 
 So our final **_find_** command will look like this.
 
-```shell
+```bash
 bandit6@bandit:~$ find / -user bandit7 -group bandit6 -size 33c  
 find: ‘/root’: Permission denied  
 find: ‘/home/bandit28-git’: Permission denied  
@@ -643,7 +643,7 @@ So in short, **2>/dev/null** redirects all error messages to **/dev/null**.
 
 Now, if we run the find command along with the redirection, we get
 
-```shell
+```bash
 bandit6@bandit:~$ find / -user bandit7 -group bandit6 -size 33c 2> /dev/null
 
 /var/lib/dpkg/info/bandit7.password
