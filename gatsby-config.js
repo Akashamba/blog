@@ -26,12 +26,16 @@ module.exports = {
         ],
         externalLinks: [
           {
+            name: `Website`,
+            url: `https://akashamba.netlify.app/`,
+          },
+          {
             name: `Twitter`,
             url: `https://twitter.com/akashamba238`,
           },
           {
-            name: `Instagram`,
-            url: `https://twitter.com/akashamba238`,
+            name: `LinkedIn`,
+            url: `https://www.linkedin.com/in/akash-ambashankar/`,
           },
         ],
       },
