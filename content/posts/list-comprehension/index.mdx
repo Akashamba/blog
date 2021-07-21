@@ -1,0 +1,37 @@
+---
+title: "List Comprehension in Python"
+date: 2021-07-21
+slug: "/blog/list-comprehension"
+tags:
+  - Tutorial  
+  - Python
+---
+
+**List Comprehension** is a useful tool that can be used on all lists in Python. Through List Comprehension, we are able to access and manipulate every element of the list, using just one simple and elegant line. Suppose we had a list of integers, and we wanted to **double every integer in the list**. This is how we would do it in List Comprehension.
+```python
+lst = [1, 2, 3, 4]
+doubleLst = [x*2 for x in lst]
+# doubleLst = [2, 4, 6, 8]
+```
+
+Although it may appear weird at first, the syntax is pretty simple. In the example above, we are accessing each element _x_ of the list _lst_. Then we are doubling each _x_ by multiplying it 2 times. This occurs as many times as there are elements in the list _lst_, Then we are assigning the newly created to _doubleLst_. This can be extended to all other operators, and even functions. 
+
+```py
+import math 
+
+squareLst = [1, 4, 9, 16, 25, 36]
+lst = [math.sqrt(x) for x in squareLst]
+# [1.0, 2.0, 3.0, 4.0, 5.0, 6.0]
+```
+
+We can even go so far as to select only the elements which meet certain conditions, through the use of _if_ statements.
+
+```py
+lst = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+evenLst = [x for x in lst if x%2 == 0]
+# [2, 4, 6, 8, 10]
+```
+
+Thus, the possibilities with list comprehension are endless, and most problems can be simplified through the use of list comprehensions. 
+
+For any doubts or feedback, you can find me on [Twitter](https://twitter.com/akashamba238).
