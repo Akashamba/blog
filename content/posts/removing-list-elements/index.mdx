@@ -1,0 +1,25 @@
+---
+title: "Remove Multiple Instances of the same element from a List"
+date: 2021-07-22
+slug: "/blog/remove-multiple-instances-of-the-same-element-from-a-list"
+tags:
+  - Tutorial  
+  - Python
+---
+
+In this post, we're going to learn how multiple instances of the same element can be removed from a list. For example, if we have a list, and we want to remove every occurrence of the number 5 from the list, this is what our result would look like.
+```py
+lst = [4, 9, 5, 7, 8, 5, 9, 3, 5, 8, 7]
+newLst = [4, 9, 7, 8, 9, 3, 8, 7]
+```
+
+There are many ways to do this, but the simplest approach is to use list comprehension, which I have covered in a [previous post](/blog/list-comprehension), so check it out if you're unsure of what list comprehension is.
+
+Using list comprehension, we can filter out a specific element as follows.
+```py
+lst = [4, 9, 5, 7, 8, 5, 9, 3, 5, 8, 7]
+newLst = [x for x in lst if x != 5]
+# newLst = [4, 9, 7, 8, 9, 3, 8, 7]
+```
+
+For any doubts or feedback, you can find me on [Twitter](https://twitter.com/akashamba238).
